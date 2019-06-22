@@ -41,7 +41,7 @@ module.exports = {
     ]
   },
 
-  plugins: [new HtmlWebpackPlugin({ template: "index.html" })],
+  plugins: [new HtmlWebpackPlugin({ template: "public/index.html" })],
 
   // When importing a module whose path matches one of the following, just
   // assume a corresponding global variable exists and use that instead.

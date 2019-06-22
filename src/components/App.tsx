@@ -1,11 +1,18 @@
-import * as React from "react";
+import * as React from "react"
+import "../../public/semantic.cyborg.min.css"
+import { Header } from "semantic-ui-react"
 
-export interface AppProps { compiler: string; framework: string; }
+export interface AppProps {
+  compiler: string
+  framework: string
+}
 
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
 export default class App extends React.Component<AppProps, {}> {
-    render() {
-        return <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>;
-    }
+  render() {
+    return (
+      <Header>
+        Hello from {this.props.compiler} and {this.props.framework}!
+      </Header>
+    )
+  }
 }
