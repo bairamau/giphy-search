@@ -27,7 +27,21 @@ module.exports = {
 
       { test: /\.css$/, use: ["style-loader", "css-loader"] },
 
-      { test: /\.(jpg|jpeg|png|gif|mp3|svg)$/, loaders: ["file-loader"] }
+      {
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        loader: "url-loader",
+        options: {
+          limit: 10000,
+          name: "static/media/[name].[hash:8].[ext]"
+        }
+      },
+      {
+        test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/],
+        loader: "file-loader",
+        options: {
+          name: "static/media/[name].[hash:8].[ext]"
+        }
+      }
     ]
   },
 
