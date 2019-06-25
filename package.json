@@ -13,7 +13,6 @@
     "css-loader": "^3.0.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "semantic-ui-react": "^0.87.2",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "typescript": "^3.5.2",
@@ -25,7 +24,10 @@
   "dependencies": {
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
+    "@types/react-router-dom": "^4.3.4",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "semantic-ui-react": "^0.87.2"
   }
 }

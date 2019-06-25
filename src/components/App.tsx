@@ -1,18 +1,22 @@
-import * as React from "react"
 import "../../public/semantic.cyborg.min.css"
-import { Header } from "semantic-ui-react"
+import * as React from "react"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { Container } from "semantic-ui-react"
 
-export interface AppProps {
-  compiler: string
-  framework: string
+import Trending from "./Trending"
+import Menu from "./Menu"
+
+const App = () => {
+  return (
+    <Router>
+      <Menu />
+      <Switch>
+        <Container>
+          <Route path="/" component={Trending} />
+        </Container>
+      </Switch>
+    </Router>
+  )
 }
 
-export default class App extends React.Component<AppProps, {}> {
-  render() {
-    return (
-      <Header>
-        Hello from {this.props.compiler} and {this.props.framework}!
-      </Header>
-    )
-  }
-}
+export default App
