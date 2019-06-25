@@ -34,6 +34,7 @@ const HeaderMenu = (props: RouteComponentProps) => {
           <Menu.Item style={{ flex: "1" }}>
             <Input transparent icon placeholder="Search...">
               <input
+                autoFocus={true}
                 onChange={e => setSearch(e.target.value)}
                 value={search}
                 onKeyPress={e => (e.key === "Enter" ? handleSearch() : null)}
