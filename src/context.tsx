@@ -1,9 +1,5 @@
 import * as React from "react"
-import {
-  getTrendingGifsAction,
-  GET_TRENDING_GIFS,
-  GET_SEARCHED_GIFS
-} from "./actions"
+import { GET_TRENDING_GIFS, GET_SEARCHED_GIFS } from "./actions"
 
 import { IDataItem } from "./api"
 
@@ -20,6 +16,11 @@ interface IState {
 
 interface IReducer {
   (state: IState, action: IAction): IState
+}
+
+interface IValue {
+  state: IState
+  dispatch: React.Dispatch<IAction>
 }
 
 const reducer: IReducer = (state, action) => {
@@ -41,11 +42,6 @@ const reducer: IReducer = (state, action) => {
   }
 }
 
-interface IValue {
-  state: IState
-  dispatch: React.Dispatch<IAction>
-}
-
 const Context = React.createContext<IValue>({} as IValue)
 
 export const Provider: React.FC = ({ children }) => {
@@ -54,10 +50,6 @@ export const Provider: React.FC = ({ children }) => {
     gifs: [],
     stickers: []
   })
-
-  React.useEffect(() => {
-    getTrendingGifsAction().then(action => dispatch(action))
-  }, [])
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
