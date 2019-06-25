@@ -1,5 +1,11 @@
 import * as React from "react"
-import { getTrendingGifsAction, GET_TRENDING_GIFS } from "./actions"
+import {
+  getTrendingGifsAction,
+  GET_TRENDING_GIFS,
+  GET_SEARCHED_GIFS
+} from "./actions"
+
+import { IDataItem } from "./api"
 
 interface IAction {
   type: string
@@ -7,10 +13,9 @@ interface IAction {
 }
 
 interface IState {
-  loading: boolean
-  trendingGifs: []
-  gifs: []
-  stickers: []
+  trendingGifs: IDataItem[]
+  gifs: IDataItem[]
+  stickers: IDataItem[]
 }
 
 interface IReducer {
@@ -23,15 +28,16 @@ const reducer: IReducer = (state, action) => {
       console.log(action.payload.trendingGifs)
       return {
         ...state,
-        loading: false,
         trendingGifs: action.payload.trendingGifs
       }
-    default:
+    case GET_SEARCHED_GIFS:
+      console.log(action.payload.gifs)
       return {
         ...state,
-        gifs: [],
-        stickers: []
+        gifs: action.payload.gifs
       }
+    default:
+      return state
   }
 }
 
@@ -44,7 +50,6 @@ const Context = React.createContext<IValue>({} as IValue)
 
 export const Provider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer<IReducer>(reducer, {
-    loading: true,
     trendingGifs: [],
     gifs: [],
     stickers: []
@@ -53,8 +58,6 @@ export const Provider: React.FC = ({ children }) => {
   React.useEffect(() => {
     getTrendingGifsAction().then(action => dispatch(action))
   }, [])
-
-  React.useEffect(() => console.log("rendered"))
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>

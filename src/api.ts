@@ -22,6 +22,7 @@ const getData = async (path: string, query: string = "") => {
     .then(object => mapData(object.data))
 }
 
-export const getTrendingGifs = async () => {
-  return await getData("gifs/trending")
-}
+export const getSearchedGifs = async (query: string) =>
+  await getData("gifs/search", query)
+
+export const getTrendingGifs = async () => await getData("gifs/trending")

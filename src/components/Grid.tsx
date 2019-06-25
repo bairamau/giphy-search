@@ -10,9 +10,8 @@ const Grid = (props: IGridProps) => {
   return (
     <div
       style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-evenly",
+        columns: "4 auto",
+        columnGap: "20px"
       }}
     >
       {props.items.map(item => (
