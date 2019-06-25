@@ -4,7 +4,8 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     filename: "bundle.js",
-    path: __dirname + "/dist"
+    path: __dirname + "/dist",
+    publicPath: '/'
   },
 
   mode: process.env.NODE_ENV || "development",
@@ -50,6 +51,7 @@ module.exports = {
 
   devServer: {
     port: 3000,
+    historyApiFallback: true,
     overlay: {
       warnings: true,
       errors: true
