@@ -1,12 +1,12 @@
 import * as React from "react"
 import Context from "../context"
-import { getTrendingGifsAction } from "../actions"
+import { getTrendingGifsActionCreator } from "../actions"
 import Grid from "./Grid"
 
 const Search = () => {
   const { state, dispatch } = React.useContext(Context)
   React.useEffect(() => {
-    getTrendingGifsAction()
+    getTrendingGifsActionCreator()
       .then(action => dispatch(action))
       .then(() => console.log("dispatched trending"))
   }, [])

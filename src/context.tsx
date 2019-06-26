@@ -1,12 +1,7 @@
 import * as React from "react"
-import { GET_TRENDING_GIFS, GET_SEARCHED_GIFS } from "./actions"
+import { GET_TRENDING_GIFS, GET_SEARCHED_GIFS, Actions } from "./actions"
 
 import { IDataItem } from "./api"
-
-interface IAction {
-  type: string
-  payload?: any
-}
 
 interface IState {
   trendingGifs: IDataItem[]
@@ -14,28 +9,28 @@ interface IState {
   stickers: IDataItem[]
 }
 
-interface IReducer {
-  (state: IState, action: IAction): IState
+interface IReducer<TActions> {
+  (state: IState, action: TActions): IState
 }
 
 interface IValue {
   state: IState
-  dispatch: React.Dispatch<IAction>
+  dispatch: React.Dispatch<Actions>
 }
 
-const reducer: IReducer = (state, action) => {
+const reducer: IReducer<Actions> = (state, action) => {
   switch (action.type) {
     case GET_TRENDING_GIFS:
-      console.log(action.payload.trendingGifs)
+      console.log(action.payload)
       return {
         ...state,
-        trendingGifs: action.payload.trendingGifs
+        trendingGifs: action.payload
       }
     case GET_SEARCHED_GIFS:
-      console.log(action.payload.gifs)
+      console.log(action.payload)
       return {
         ...state,
-        gifs: action.payload.gifs
+        gifs: action.payload
       }
     default:
       return state
@@ -45,7 +40,7 @@ const reducer: IReducer = (state, action) => {
 const Context = React.createContext<IValue>({} as IValue)
 
 export const Provider: React.FC = ({ children }) => {
-  const [state, dispatch] = React.useReducer<IReducer>(reducer, {
+  const [state, dispatch] = React.useReducer(reducer, {
     trendingGifs: [],
     gifs: [],
     stickers: []

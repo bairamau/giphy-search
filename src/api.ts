@@ -8,8 +8,10 @@ export interface IDataItem {
   url: string
 }
 
-const mapData = (data: any): IDataItem[] =>
-  data.map((item: any) => ({
+const mapData = (
+  data: (IDataItem & { images: { original: { webp: string } } })[]
+): IDataItem[] =>
+  data.map(item => ({
     type: item.type,
     id: item.id,
     title: item.title,
