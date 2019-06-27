@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Actions } from "./actions"
+import { Actions, loadActionCreator } from "./actions"
 import { IState, reducer } from "./reducers"
 
 interface IValue {
@@ -20,6 +20,10 @@ export const Provider: React.FC = ({ children }) => {
     savedStickers: {},
     isViewingGifs: true
   })
+
+  React.useEffect(() => {
+    loadActionCreator().then(action => dispatch(action))
+  }, [])
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>

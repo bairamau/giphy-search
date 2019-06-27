@@ -11,6 +11,12 @@ import {
 const HeaderMenu = (props: RouteComponentProps) => {
   const [search, setSearch] = React.useState("")
   const { state, dispatch } = React.useContext(Context)
+  const searchRef = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    if (searchRef.current) {
+      searchRef.current.focus()
+    }
+  })
   const handleSearch = () => {
     props.history.push(`/search/${search.split(" ").join("-")}`)
   }
@@ -29,9 +35,9 @@ const HeaderMenu = (props: RouteComponentProps) => {
             <Menu.Item style={{ flex: "1" }}>
               <Input transparent icon placeholder="Search...">
                 <input
+                  ref={searchRef}
                   autoFocus={true}
                   onChange={e => setSearch(e.target.value)}
-                  value={search}
                   onKeyPress={e => (e.key === "Enter" ? handleSearch() : null)}
                 />
                 <Icon onClick={handleSearch} name="search" link={true} />

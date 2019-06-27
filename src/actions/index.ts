@@ -6,14 +6,16 @@ import {
   IDataItem
 } from "../api"
 
-export const GET_TRENDING_GIFS = "GET_TRENDING_GIFS"
-export const GET_TRENDING_STICKERS = "GET_TRENDING_STICKERS"
-export const GET_SEARCHED_GIFS = "GET_SEARCHED_GIFS"
-export const GET_SEARCHED_STICKERS = "GET_SEARCHED_STICKERS"
-export const SAVE = "SAVE"
-export const REMOVE = "REMOVE"
-export const SET_VIEW_GIFS = "SET_VIEW_GIFS"
-export const SET_VIEW_STICKERS = "SET_VIEW_STICKERS"
+const GET_TRENDING_GIFS = "GET_TRENDING_GIFS"
+const GET_TRENDING_STICKERS = "GET_TRENDING_STICKERS"
+const GET_SEARCHED_GIFS = "GET_SEARCHED_GIFS"
+const GET_SEARCHED_STICKERS = "GET_SEARCHED_STICKERS"
+const CLEAR_SEARCHED = "CLEAR_SEARCHED"
+const SAVE = "SAVE"
+const REMOVE = "REMOVE"
+const SET_VIEW_GIFS = "SET_VIEW_GIFS"
+const SET_VIEW_STICKERS = "SET_VIEW_STICKERS"
+const LOAD = "LOAD"
 
 interface IAction<TType, TPayload = undefined> {
   type: TType
@@ -23,24 +25,24 @@ interface IAction<TType, TPayload = undefined> {
 interface ITrendingGifsACAction
   extends IAction<"GET_TRENDING_GIFS", IDataItem[]> {}
 
-export const getTrendingGifsActionCreator = async (): Promise<
-  ITrendingGifsACAction
-> => {
+export const getTrendingGifsActionCreator = async (
+  offset: number
+): Promise<ITrendingGifsACAction> => {
   return {
     type: GET_TRENDING_GIFS,
-    payload: await getTrendingGifs()
+    payload: await getTrendingGifs(`&offset=${offset}`)
   }
 }
 
 interface ITrendingStickersACAction
   extends IAction<"GET_TRENDING_STICKERS", IDataItem[]> {}
 
-export const getTrendingStickersActionCreator = async (): Promise<
-  ITrendingStickersACAction
-> => {
+export const getTrendingStickersActionCreator = async (
+  offset: number
+): Promise<ITrendingStickersACAction> => {
   return {
     type: GET_TRENDING_STICKERS,
-    payload: await getTrendingStickers()
+    payload: await getTrendingStickers(`&offset=${offset}`)
   }
 }
 
@@ -48,11 +50,12 @@ interface ISearchedGifsACAction
   extends IAction<"GET_SEARCHED_GIFS", IDataItem[]> {}
 
 export const getSearchedGifsActionCreator = async (
-  query: string
+  query: string,
+  offset: number
 ): Promise<ISearchedGifsACAction> => {
   return {
     type: GET_SEARCHED_GIFS,
-    payload: await getSearchedGifs(query)
+    payload: await getSearchedGifs(`${query}&offset=${offset}`)
   }
 }
 
@@ -60,17 +63,45 @@ interface ISearchedStickersACAction
   extends IAction<"GET_SEARCHED_STICKERS", IDataItem[]> {}
 
 export const getSearchedStickersActionCreator = async (
-  query: string
+  query: string,
+  offset: number
 ): Promise<ISearchedStickersACAction> => {
   return {
     type: GET_SEARCHED_STICKERS,
-    payload: await getSearchedStickers(query)
+    payload: await getSearchedStickers(`${query}&offset=${offset}`)
+  }
+}
+
+interface IClearSearchedACAction extends IAction<"CLEAR_SEARCHED"> {}
+
+export const clearSearchedActionCreator = (): IClearSearchedACAction => {
+  return {
+    type: CLEAR_SEARCHED,
+    payload: undefined
   }
 }
 
 interface ISaveACAction extends IAction<"SAVE", IDataItem> {}
 
 export const saveActionCreator = (item: IDataItem): ISaveACAction => {
+  const request = window.indexedDB.open("SavedItems")
+
+  request.onsuccess = () => {
+    const db = request.result
+    const transaction = db.transaction(["gifs", "stickers"], "readwrite")
+    const gifStore = transaction.objectStore("gifs")
+    const stickerStore = transaction.objectStore("stickers")
+
+    if (!item.isSticker) {
+      gifStore.add(item)
+    } else {
+      stickerStore.add(item)
+    }
+
+    transaction.oncomplete = () => {
+      db.close()
+    }
+  }
   return {
     type: SAVE,
     payload: item
@@ -81,6 +112,23 @@ interface IRemoveACAction
   extends IAction<"REMOVE", { id: string; isSticker: boolean }> {}
 
 export const removeActionCreator = (item: IDataItem): IRemoveACAction => {
+  const request = window.indexedDB.open("SavedItems")
+  request.onsuccess = () => {
+    const db = request.result
+    const transaction = db.transaction(["gifs", "stickers"], "readwrite")
+    const gifStore = transaction.objectStore("gifs")
+    const stickerStore = transaction.objectStore("stickers")
+
+    if (!item.isSticker) {
+      gifStore.delete(item.id)
+    } else {
+      stickerStore.delete(item.id)
+    }
+
+    transaction.oncomplete = () => {
+      db.close()
+    }
+  }
   return {
     type: REMOVE,
     payload: {
@@ -108,12 +156,63 @@ export const setViewStickersActionCreator = (): ISetViewStickersACAction => {
   }
 }
 
+interface ILoadACAction
+  extends IAction<
+    "LOAD",
+    { gifsArray: IDataItem[]; stickersArray: IDataItem[] }
+  > {}
+
+export const loadActionCreator = async (): Promise<ILoadACAction> => {
+  let gifsArray: IDataItem[] = []
+  let stickersArray: IDataItem[] = []
+  const request = window.indexedDB.open("SavedItems")
+
+  request.onupgradeneeded = () => {
+    const db = request.result
+
+    const gifStore = db.createObjectStore("gifs", { keyPath: "id" })
+    gifStore.createIndex("id", "id")
+
+    const stickerStore = db.createObjectStore("stickers", { keyPath: "id" })
+    stickerStore.createIndex("id", "id")
+  }
+
+  request.onsuccess = () => {
+    const db = request.result
+    const transaction = db.transaction(["gifs", "stickers"], "readwrite")
+    const gifStore = transaction.objectStore("gifs")
+    const stickerStore = transaction.objectStore("stickers")
+
+    const gifsRequest = gifStore.getAll()
+    const stickersRequest = stickerStore.getAll()
+    gifsRequest.onsuccess = async () => {
+      gifsArray = await gifsRequest.result
+    }
+    stickersRequest.onsuccess = async () => {
+      stickersArray = await stickersRequest.result
+    }
+
+    transaction.oncomplete = () => {
+      db.close()
+    }
+  }
+  return {
+    type: LOAD,
+    payload: {
+      gifsArray,
+      stickersArray
+    }
+  }
+}
+
 export type Actions =
   | ITrendingGifsACAction
   | ITrendingStickersACAction
   | ISearchedGifsACAction
   | ISearchedStickersACAction
+  | IClearSearchedACAction
   | ISaveACAction
   | IRemoveACAction
   | ISetViewGifsACAction
   | ISetViewStickersACAction
+  | ILoadACAction

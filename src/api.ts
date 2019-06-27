@@ -40,7 +40,8 @@ export const getSearchedGifs = async (query: string) =>
 export const getSearchedStickers = async (query: string) =>
   await getData("stickers/search", query)
 
-export const getTrendingGifs = async () => await getData("gifs/trending")
+export const getTrendingGifs = async (query: string) =>
+  await getData("gifs/trending", query)
 
-export const getTrendingStickers = async () =>
-  await getData("stickers/trending")
+export const getTrendingStickers = async (query: string) =>
+  await getData("stickers/trending", query)

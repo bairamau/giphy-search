@@ -1,16 +1,6 @@
 import { IDataItem } from "../api"
 
-import {
-  Actions,
-  GET_TRENDING_GIFS,
-  GET_TRENDING_STICKERS,
-  GET_SEARCHED_GIFS,
-  GET_SEARCHED_STICKERS,
-  SAVE,
-  REMOVE,
-  SET_VIEW_GIFS,
-  SET_VIEW_STICKERS
-} from "../actions"
+import { Actions } from "../actions"
 
 export interface IState {
   trendingGifs: IDataItem[]
@@ -32,27 +22,33 @@ interface IReducer<TActions> {
 
 export const reducer: IReducer<Actions> = (state, action) => {
   switch (action.type) {
-    case GET_TRENDING_GIFS:
+    case "GET_TRENDING_GIFS":
       return {
         ...state,
-        trendingGifs: action.payload
+        trendingGifs: [...state.trendingGifs, ...action.payload]
       }
-    case GET_TRENDING_STICKERS:
+    case "GET_TRENDING_STICKERS":
       return {
         ...state,
-        trendingStickers: action.payload
+        trendingStickers: [...state.trendingStickers, ...action.payload]
       }
-    case GET_SEARCHED_GIFS:
+    case "GET_SEARCHED_GIFS":
       return {
         ...state,
-        gifs: action.payload
+        gifs: [...state.gifs, ...action.payload]
       }
-    case GET_SEARCHED_STICKERS:
+    case "GET_SEARCHED_STICKERS":
       return {
         ...state,
-        stickers: action.payload
+        stickers: [...state.stickers, ...action.payload]
       }
-    case SAVE:
+    case "CLEAR_SEARCHED":
+      return {
+        ...state,
+        gifs: [],
+        stickers: []
+      }
+    case "SAVE":
       return !action.payload.isSticker
         ? {
             ...state,
@@ -68,7 +64,7 @@ export const reducer: IReducer<Actions> = (state, action) => {
               [action.payload.id]: action.payload
             }
           }
-    case REMOVE:
+    case "REMOVE":
       if (!action.payload.isSticker) {
         const { [action.payload.id]: _, ...withoutTarget } = state.savedGifs
         return {
@@ -82,18 +78,42 @@ export const reducer: IReducer<Actions> = (state, action) => {
           savedStickers: withoutTarget
         }
       }
-    case SET_VIEW_GIFS: {
+    case "SET_VIEW_GIFS": {
       console.log("viewing gifs")
       return {
         ...state,
         isViewingGifs: true
       }
     }
-    case SET_VIEW_STICKERS: {
+    case "SET_VIEW_STICKERS": {
       console.log("viewing stickers")
       return {
         ...state,
         isViewingGifs: false
+      }
+    }
+
+    case "LOAD": {
+      console.log("loading")
+      const savedGifs = action.payload.gifsArray.reduce((accum, item) => {
+        return {
+          ...accum,
+          [item.id]: item
+        }
+      }, {})
+      const savedStickers = action.payload.stickersArray.reduce(
+        (accum, item) => {
+          return {
+            ...accum,
+            [item.id]: item
+          }
+        },
+        {}
+      )
+      return {
+        ...state,
+        savedGifs,
+        savedStickers
       }
     }
     default:
