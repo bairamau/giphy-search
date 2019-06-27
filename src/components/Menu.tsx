@@ -29,9 +29,12 @@ const HeaderMenu = (props: RouteComponentProps) => {
             <Menu.Item as={NavLink} exact to="/">
               Trending
             </Menu.Item>
-            <Menu.Item as={NavLink} exact to="/saved">
-              Saved
-            </Menu.Item>
+            {(Object.keys(state.savedGifs).length !== 0 ||
+              Object.keys(state.savedStickers).length !== 0) && (
+              <Menu.Item as={NavLink} exact to="/saved">
+                Saved
+              </Menu.Item>
+            )}
             <Menu.Item style={{ flex: "1" }}>
               <Input transparent icon placeholder="Search...">
                 <input
