@@ -79,14 +79,12 @@ export const reducer: IReducer<Actions> = (state, action) => {
         }
       }
     case "SET_VIEW_GIFS": {
-      console.log("viewing gifs")
       return {
         ...state,
         isViewingGifs: true
       }
     }
     case "SET_VIEW_STICKERS": {
-      console.log("viewing stickers")
       return {
         ...state,
         isViewingGifs: false
@@ -94,7 +92,6 @@ export const reducer: IReducer<Actions> = (state, action) => {
     }
 
     case "LOAD": {
-      console.log(action.payload)
       const savedGifs = action.payload.gifsArray.reduce((accum, item) => {
         return {
           ...accum,
@@ -111,7 +108,6 @@ export const reducer: IReducer<Actions> = (state, action) => {
         {}
       )
 
-      console.log(savedGifs, savedStickers)
       return {
         ...state,
         savedGifs,

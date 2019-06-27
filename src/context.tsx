@@ -54,7 +54,6 @@ export const Provider: React.FC = ({ children }) => {
 
       transaction.oncomplete = () => {
         db.close()
-        console.log({ gifsArray, stickersArray })
         dispatch(loadActionCreator({ gifsArray, stickersArray }))
       }
     }

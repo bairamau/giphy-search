@@ -27,10 +27,6 @@ const mapData = (
 const getData = async (path: string, query: string = "") => {
   return await fetch(`${BASE_URL}/${path}?api_key=${API_KEY}${query}`)
     .then(response => response.json())
-    .then(object => {
-      console.log(object)
-      return object
-    })
     .then(object => mapData(object.data))
 }
 

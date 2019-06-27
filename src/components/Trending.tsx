@@ -18,20 +18,8 @@ const Search = () => {
       state.isViewingGifs
         ? getTrendingGifsActionCreator(state.trendingGifs.length)
             .then(action => dispatch(action))
-            .then(() =>
-              console.log(
-                "dispatched trending gifs with offset",
-                state.trendingGifs.length
-              )
-            )
         : getTrendingStickersActionCreator(state.trendingStickers.length)
             .then(action => dispatch(action))
-            .then(() =>
-              console.log(
-                "dispatched trending stickers with offset",
-                state.trendingStickers.length
-              )
-            )
     }
   }
   React.useEffect(() => {
@@ -39,18 +27,15 @@ const Search = () => {
       ? state.trendingGifs.length === 0 &&
         getTrendingGifsActionCreator(0)
           .then(action => dispatch(action))
-          .then(() => console.log("FIRST TIME dispatched trending gifs"))
       : state.trendingStickers.length === 0 &&
         getTrendingStickersActionCreator(0)
           .then(action => dispatch(action))
-          .then(() => console.log("FIRST TIME dispatched trending stickers"))
   }, [state.isViewingGifs])
 
   React.useEffect(() => {
     window.addEventListener("scroll", scrollHandler)
     return () => {
       window.removeEventListener("scroll", scrollHandler)
-      console.log("removed scroll listener")
     }
   }, [
     state.trendingGifs.length,

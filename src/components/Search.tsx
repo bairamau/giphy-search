@@ -24,20 +24,8 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
       state.isViewingGifs
         ? getSearchedGifsActionCreator(queryString, state.gifs.length)
             .then(action => dispatch(action))
-            .then(() =>
-              console.log(
-                "dispatched search gifs with offset",
-                state.gifs.length
-              )
-            )
         : getSearchedStickersActionCreator(queryString, state.stickers.length)
             .then(action => dispatch(action))
-            .then(() =>
-              console.log(
-                "dispatched search stickers with offset",
-                state.stickers.length
-              )
-            )
     }
   }
 
@@ -46,11 +34,9 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
       ? state.gifs.length === 0 &&
         getSearchedGifsActionCreator(queryString, 0)
           .then(action => dispatch(action))
-          .then(() => console.log("FIRST TIME dispatched search gifs"))
       : state.stickers.length === 0 &&
         getSearchedStickersActionCreator(queryString, 0)
           .then(action => dispatch(action))
-          .then(() => console.log("FIRST TIME dispatched search stickers"))
   }, [queryString, state.isViewingGifs])
 
   React.useEffect(() => {
@@ -59,10 +45,8 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
       (!state.isViewingGifs && state.stickers.length !== 0)
     ) {
       window.addEventListener("scroll", scrollHandler)
-      console.log("added scroll listener")
       return () => {
         window.removeEventListener("scroll", scrollHandler)
-        console.log("removed scroll listener")
       }
     }
   }, [state.isViewingGifs, state.gifs.length, state.stickers.length])
