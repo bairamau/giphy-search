@@ -162,40 +162,13 @@ interface ILoadACAction
     { gifsArray: IDataItem[]; stickersArray: IDataItem[] }
   > {}
 
-export const loadActionCreator = async (): Promise<ILoadACAction> => {
-  let gifsArray: IDataItem[] = []
-  let stickersArray: IDataItem[] = []
-  const request = window.indexedDB.open("SavedItems")
-
-  request.onupgradeneeded = () => {
-    const db = request.result
-
-    const gifStore = db.createObjectStore("gifs", { keyPath: "id" })
-    gifStore.createIndex("id", "id")
-
-    const stickerStore = db.createObjectStore("stickers", { keyPath: "id" })
-    stickerStore.createIndex("id", "id")
-  }
-
-  request.onsuccess = () => {
-    const db = request.result
-    const transaction = db.transaction(["gifs", "stickers"], "readwrite")
-    const gifStore = transaction.objectStore("gifs")
-    const stickerStore = transaction.objectStore("stickers")
-
-    const gifsRequest = gifStore.getAll()
-    const stickersRequest = stickerStore.getAll()
-    gifsRequest.onsuccess = async () => {
-      gifsArray = await gifsRequest.result
-    }
-    stickersRequest.onsuccess = async () => {
-      stickersArray = await stickersRequest.result
-    }
-
-    transaction.oncomplete = () => {
-      db.close()
-    }
-  }
+export const loadActionCreator = ({
+  gifsArray,
+  stickersArray
+}: {
+  gifsArray: IDataItem[]
+  stickersArray: IDataItem[]
+}): ILoadACAction => {
   return {
     type: LOAD,
     payload: {

@@ -94,7 +94,7 @@ export const reducer: IReducer<Actions> = (state, action) => {
     }
 
     case "LOAD": {
-      console.log("loading")
+      console.log(action.payload)
       const savedGifs = action.payload.gifsArray.reduce((accum, item) => {
         return {
           ...accum,
@@ -110,6 +110,8 @@ export const reducer: IReducer<Actions> = (state, action) => {
         },
         {}
       )
+
+      console.log(savedGifs, savedStickers)
       return {
         ...state,
         savedGifs,
