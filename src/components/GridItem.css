@@ -1,0 +1,38 @@
+.GridItem__container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.GridItem__image {
+  width: 100%;
+  background: url(../../public/bg-tile-dark.png)
+}
+
+.GridItem__controls {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.GridItem__button {
+  cursor: pointer;
+  transform: scale(0);
+}
+
+.GridItem__container:hover .GridItem__controls {
+  opacity: 1;
+  transition: 150ms;
+}
+
+.GridItem__container:hover .GridItem__button {
+  transform: scale(1);
+  transition: 150ms;
+}
