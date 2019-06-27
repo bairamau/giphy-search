@@ -3,7 +3,8 @@ import { RouteComponentProps } from "react-router-dom"
 import Context from "../context"
 import {
   getSearchedGifsActionCreator,
-  getSearchedStickersActionCreator
+  getSearchedStickersActionCreator,
+  clearSearchedActionCreator
 } from "../actions"
 import Grid from "./Grid"
 
@@ -22,21 +23,26 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
     ) {
       window.removeEventListener("scroll", scrollHandler)
       state.isViewingGifs
-        ? getSearchedGifsActionCreator(queryString, state.gifs.length)
-            .then(action => dispatch(action))
-        : getSearchedStickersActionCreator(queryString, state.stickers.length)
-            .then(action => dispatch(action))
+        ? getSearchedGifsActionCreator(queryString, state.gifs.length).then(
+            action => dispatch(action)
+          )
+        : getSearchedStickersActionCreator(
+            queryString,
+            state.stickers.length
+          ).then(action => dispatch(action))
     }
   }
 
   React.useEffect(() => {
     state.isViewingGifs
       ? state.gifs.length === 0 &&
-        getSearchedGifsActionCreator(queryString, 0)
-          .then(action => dispatch(action))
+        getSearchedGifsActionCreator(queryString, 0).then(action =>
+          dispatch(action)
+        )
       : state.stickers.length === 0 &&
-        getSearchedStickersActionCreator(queryString, 0)
-          .then(action => dispatch(action))
+        getSearchedStickersActionCreator(queryString, 0).then(action =>
+          dispatch(action)
+        )
   }, [queryString, state.isViewingGifs])
 
   React.useEffect(() => {
@@ -51,7 +57,10 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
     }
   }, [state.isViewingGifs, state.gifs.length, state.stickers.length])
 
-  React.useEffect(() => {})
+  React.useEffect(() => {
+    dispatch(clearSearchedActionCreator())
+  }, [queryString])
+
   return <Grid items={state.isViewingGifs ? state.gifs : state.stickers} />
 }
 

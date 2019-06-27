@@ -16,26 +16,31 @@ const Search = () => {
     ) {
       window.removeEventListener("scroll", scrollHandler)
       state.isViewingGifs
-        ? getTrendingGifsActionCreator(state.trendingGifs.length)
-            .then(action => dispatch(action))
-        : getTrendingStickersActionCreator(state.trendingStickers.length)
-            .then(action => dispatch(action))
+        ? getTrendingGifsActionCreator(state.trendingGifs.length).then(action =>
+            dispatch(action)
+          )
+        : getTrendingStickersActionCreator(state.trendingStickers.length).then(
+            action => dispatch(action)
+          )
     }
   }
   React.useEffect(() => {
     state.isViewingGifs
       ? state.trendingGifs.length === 0 &&
-        getTrendingGifsActionCreator(0)
-          .then(action => dispatch(action))
+        getTrendingGifsActionCreator(0).then(action => dispatch(action))
       : state.trendingStickers.length === 0 &&
-        getTrendingStickersActionCreator(0)
-          .then(action => dispatch(action))
+        getTrendingStickersActionCreator(0).then(action => dispatch(action))
   }, [state.isViewingGifs])
 
   React.useEffect(() => {
-    window.addEventListener("scroll", scrollHandler)
-    return () => {
-      window.removeEventListener("scroll", scrollHandler)
+    if (
+      (state.isViewingGifs && state.trendingGifs.length !== 0) ||
+      (!state.isViewingGifs && state.trendingStickers.length !== 0)
+    ) {
+      window.addEventListener("scroll", scrollHandler)
+      return () => {
+        window.removeEventListener("scroll", scrollHandler)
+      }
     }
   }, [
     state.trendingGifs.length,
