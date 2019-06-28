@@ -12,12 +12,14 @@ const GridItem = ({ id, title, url, saved, handleClick }: IGridItem) => {
   return (
     <div className="GridItem__container">
       <video
+        id={id}
+        title={title}
         className="GridItem__image"
         src={url}
         autoPlay
         muted
         loop
-        playsinline
+        playsInline
       />
       <div className="GridItem__controls">
         <Icon
