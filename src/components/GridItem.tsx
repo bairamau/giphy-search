@@ -8,19 +8,30 @@ interface IGridItem extends IDataItem {
   handleClick(): void
 }
 
-const GridItem = ({ id, title, url, saved, handleClick }: IGridItem) => {
+const GridItem = ({
+  id,
+  title,
+  url,
+  saved,
+  handleClick,
+  isSticker
+}: IGridItem) => {
   return (
     <div className="GridItem__container">
-      <video
-        id={id}
-        title={title}
-        className="GridItem__image"
-        src={url}
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+      {isSticker ? (
+        <img src={url} id={id} alt={title} className="GridItem__image" />
+      ) : (
+        <video
+          id={id}
+          title={title}
+          className="GridItem__image"
+          src={url}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      )}
       <div className="GridItem__controls">
         <Icon
           inverted

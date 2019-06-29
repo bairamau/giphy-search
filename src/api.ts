@@ -14,14 +14,14 @@ const mapData = (
     id: string
     title: string
     url: string
-    images: { original: { mp4: string } }
+    images: { original: { mp4: string; webp: string } }
   }[]
 ): IDataItem[] =>
   data.map(item => ({
     isSticker: item.is_sticker,
     id: item.id,
     title: item.title,
-    url: item.images.original.mp4
+    url: item.is_sticker ? item.images.original.webp : item.images.original.mp4
   }))
 
 const getData = async (path: string, query: string = "") => {
