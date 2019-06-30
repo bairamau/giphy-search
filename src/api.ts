@@ -1,4 +1,4 @@
-const BASE_URL = "http://api.giphy.com/v1"
+const BASE_URL = "https://api.giphy.com/v1"
 const API_KEY = "PexJfFl286Iof51NBHygoum77qjxOTbm"
 
 export interface IDataItem {
