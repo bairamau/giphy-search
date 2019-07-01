@@ -34,6 +34,10 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
   }
 
   React.useEffect(() => {
+    dispatch(clearSearchedActionCreator())
+  }, [queryString])
+
+  React.useEffect(() => {
     state.isViewingGifs
       ? state.gifs.length === 0 &&
         getSearchedGifsActionCreator(queryString, 0).then(action =>
@@ -43,9 +47,6 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
         getSearchedStickersActionCreator(queryString, 0).then(action =>
           dispatch(action)
         )
-  }, [queryString, state.isViewingGifs])
-
-  React.useEffect(() => {
     if (
       (state.isViewingGifs && state.gifs.length !== 0) ||
       (!state.isViewingGifs && state.stickers.length !== 0)
@@ -56,10 +57,6 @@ const Search = (props: RouteComponentProps<IMatchParams>) => {
       }
     }
   }, [state.isViewingGifs, state.gifs.length, state.stickers.length])
-
-  React.useEffect(() => {
-    dispatch(clearSearchedActionCreator())
-  }, [queryString])
 
   return <Grid items={state.isViewingGifs ? state.gifs : state.stickers} />
 }
