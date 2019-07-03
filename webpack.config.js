@@ -3,9 +3,10 @@ var HtmlWebpackPlugin = require("html-webpack-plugin")
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "bundle.js",
+    filename: "main.bundle.js",
+    chunkFilename: "[name].bundle.js",
     path: __dirname + "/dist",
-    publicPath: '/'
+    publicPath: "/"
   },
 
   mode: process.env.NODE_ENV || "development",
@@ -32,12 +33,12 @@ module.exports = {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
         loader: "url-loader",
         options: {
-          limit: 10000,
+          limit: 10000
         }
       },
       {
         test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/],
-        loader: "file-loader",
+        loader: "file-loader"
       }
     ]
   },

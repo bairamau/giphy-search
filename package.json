@@ -9,7 +9,6 @@
   "author": "zaur",
   "license": "ISC",
   "devDependencies": {
-    "@types/react-loadable": "^5.5.1",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.0.0",
     "file-loader": "^4.0.0",
@@ -25,6 +24,7 @@
   "dependencies": {
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
+    "@types/react-loadable": "^5.5.1",
     "@types/react-router-dom": "^4.3.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
