@@ -1,4 +1,7 @@
-var HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -48,7 +51,10 @@ module.exports = {
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
 
-      { test: /\.css$/, use: ["style-loader", "css-loader"] },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
+      },
 
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -64,7 +70,11 @@ module.exports = {
     ]
   },
 
-  plugins: [new HtmlWebpackPlugin({ template: "public/index.html" })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: "public/index.html" }),
+    new MiniCssExtractPlugin(),
+    new BundleAnalyzerPlugin()
+  ],
 
   // When importing a module whose path matches one of the following, just
   // assume a corresponding global variable exists and use that instead.
