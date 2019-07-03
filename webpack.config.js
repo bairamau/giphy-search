@@ -3,13 +3,14 @@ var HtmlWebpackPlugin = require("html-webpack-plugin")
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "[name].[hash].js",
-    chunkFilename: "[name].chunk.js",
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].chunk.[contenthash].js",
     path: __dirname + "/dist",
     publicPath: "/"
   },
 
   optimization: {
+    moduleIds: "hashed",
     runtimeChunk: "single",
     splitChunks: {
       chunks: "all",
