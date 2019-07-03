@@ -1,14 +1,14 @@
-.GridItem__container {
+.grid-item__container {
   position: relative;
   margin-bottom: 20px;
 }
 
-.GridItem__image {
+.grid-item__image {
   width: 100%;
   background: url(../../public/bg-tile-dark.png)
 }
 
-.GridItem__controls {
+.grid-item__controls {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -22,17 +22,17 @@
   justify-items: center;
 }
 
-.GridItem__button {
+.grid-item__button {
   cursor: pointer;
   transform: scale(0);
 }
 
-.GridItem__container:hover .GridItem__controls {
+.grid-item__container:hover .grid-item__controls {
   opacity: 1;
   transition: 150ms;
 }
 
-.GridItem__container:hover .GridItem__button {
+.grid-item__container:hover .grid-item__button {
   transform: scale(1);
   transition: 150ms;
 }

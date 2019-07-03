@@ -17,14 +17,14 @@ const GridItem = ({
   isSticker
 }: IGridItem) => {
   return (
-    <div className="GridItem__container">
+    <div className="grid-item__container">
       {isSticker ? (
-        <img src={url} id={id} alt={title} className="GridItem__image" />
+        <img src={url} id={id} alt={title} className="grid-item__image" />
       ) : (
         <video
           id={id}
           title={title}
-          className="GridItem__image"
+          className="grid-item__image"
           src={url}
           autoPlay
           muted
@@ -32,10 +32,10 @@ const GridItem = ({
           playsInline
         />
       )}
-      <div className="GridItem__controls">
+      <div className="grid-item__controls">
         <Icon
           inverted
-          className="GridItem__button"
+          className="grid-item__button"
           color={saved ? "pink" : "grey"}
           onClick={handleClick}
           name="like"

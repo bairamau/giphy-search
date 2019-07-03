@@ -3,6 +3,7 @@ import { IDataItem } from "../api"
 import GridItem from "./GridItem"
 import Context from "../context"
 import { saveActionCreator, removeActionCreator } from "../actions"
+import "./Grid.css"
 
 interface IGridProps {
   items: IDataItem[]
@@ -12,13 +13,7 @@ const Grid = (props: IGridProps) => {
   const { state, dispatch } = React.useContext(Context)
 
   return (
-    <div
-      style={{
-        columns: "4 auto",
-        columnGap: "20px",
-        marginTop: "20px"
-      }}
-    >
+    <div className="grid-container">
       {props.items.map(item => {
         return !item.isSticker ? (
           <GridItem
