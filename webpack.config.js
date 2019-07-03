@@ -74,7 +74,7 @@ module.exports = (env, options) => ({
   plugins: [
     new CopyWebpackPlugin([
       // {output}/file.txt
-      { from: "public/_redirects", to: "_redirects" }
+      { from: "public/_redirects", to: "_redirects", toType: "file" }
     ]),
     new HtmlWebpackPlugin({ template: "public/index.html" }),
     new MiniCssExtractPlugin(),
