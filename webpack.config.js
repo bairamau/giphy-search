@@ -9,6 +9,12 @@ module.exports = {
     publicPath: "/"
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
+  },
+
   mode: process.env.NODE_ENV || "development",
 
   // Enable sourcemaps for debugging webpack's output.
