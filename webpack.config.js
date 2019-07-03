@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin
@@ -71,6 +72,10 @@ module.exports = (env, options) => ({
   },
 
   plugins: [
+    new CopyWebpackPlugin([
+      // {output}/file.txt
+      { from: "public/_redirects", to: "_redirects" }
+    ]),
     new HtmlWebpackPlugin({ template: "public/index.html" }),
     new MiniCssExtractPlugin(),
     ...(options.mode === "production" ? [] : [new BundleAnalyzerPlugin()])
