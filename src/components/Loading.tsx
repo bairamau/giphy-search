@@ -3,7 +3,7 @@ import { Loader } from "semantic-ui-react"
 import { LoadingComponentProps } from "react-loadable"
 
 const Loading: React.FC<LoadingComponentProps> = () => (
-  <Loader size="massive" content="Loading" />
+  <Loader size="massive" content="Loading" active inverted/>
 )
 
 export default Loading
