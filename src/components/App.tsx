@@ -33,7 +33,6 @@ const App = () => {
   return (
     <Router>
       <Menu />
-      xd
       <Container>
         <Switch>
           <Route path="/" exact component={LoadableTrending} />
