@@ -3,15 +3,27 @@ var HtmlWebpackPlugin = require("html-webpack-plugin")
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "main.bundle.js",
-    chunkFilename: "[name].bundle.js",
+    filename: "[name].[hash].js",
+    chunkFilename: "[name].chunk.js",
     path: __dirname + "/dist",
     publicPath: "/"
   },
 
   optimization: {
+    runtimeChunk: "single",
     splitChunks: {
-      chunks: "all"
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1]
+            return `npm.${packageName}`
+          }
+        }
+      }
     }
   },
 
